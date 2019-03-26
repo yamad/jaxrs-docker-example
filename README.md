@@ -7,7 +7,7 @@ The end result is a container that runs a trivial REST service running
 on an embedded web server. The jargon version: The project builds a
 [Docker](https://www.docker.com) container that runs a
 [JAX-RS](https://jcp.org/en/jsr/detail?id=339)
-[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer) web service using the [Wildfly Swarm](http://wildfly-swarm.io/) web server and a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+[RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer) web service using the [Thorntail](http://thorntail.io/) web server and a [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 
 I'm documenting the process here because it took a bit of work to understand
 how to do, and I want to remember it. Maybe it will help you too.
@@ -67,7 +67,7 @@ loading the application into a web server, we embed a minimal web server into
 our application. The resulting "fat JAR" has everything needed, and so it is
 trivially deployed. We just run it,
 
-    java -jar rest-test-swarm.jar
+    java -jar rest-test-thorntail.jar
 
 and the REST service starts. Take a look at the `Dockerfile` to get a sense of
 how easy it is. We build the JAR, copy it into the container (that has just a
@@ -81,18 +81,18 @@ the services.
 
 The "fat JAR" appears to have been pioneered by [Spring
 Boot](https://projects.spring.io/spring-boot/), but the JavaEE-compliant
-[Wildfly Swarm](http://wildfly-swarm.io/) does the same thing. We want a
-JavaEE JAX-RS service, so we use Wildfly Swarm.
+[Thorntail](http://thorntail.io/) does the same thing. We want a
+JavaEE JAX-RS service, so we use Thorntail.
 
 Again, we use JBoss-Forge to generate what we need. In this case, forge
 generates a Maven configuration. From the `forge` shell, run
 
-    # install the wildfly swarm plugin
-    addon-install-from-git --url https://github.com/forge/wildfly-swarm-addon.git
+    # install the thorntail plugin
+    addon-install-from-git --url https://github.com/forge/thorntail-addon.git
 
     # setup and install the minimal server config
-    wildfly-swarm-setup
-    wildfly-swarm-detect-fractions --depend
+    thorntail-setup
+    thorntail-detect-fractions --depend --build
 
 Finally, from a normal shell, run maven
 
